@@ -1,0 +1,19 @@
+"Downloads":https://developers.google.com/picasa-web/code?hl=ru
+"Javadoc":https://developers.google.com/gdata/javadoc/
+"Link to API description":https://developers.google.com/picasa-web/docs/2.0/developers_guide_java
+"Link to Protocol description":https://developers.google.com/picasa-web/docs/2.0/developers_guide_protocol
+"Create Project in Eclipse":https://developers.google.com/gdata/articles/eclipse#installingLibs
+"gdata maven repository":http://burtsev.net/en/2012/01/29/149/
+
+For one small album of 10 photos and 4 videos
+One thread takes 
+	30% cpu, mainly 2 cores, 
+	150-200 kB/s network,
+	3 minues for 37Mb
+	70 mb Memory
+10 threads takes
+	35-35% cpu mainly 3 cores
+	1 - 2 MB/s network
+	2 minutes for 37Mb
+	81 Mb Memory
+		 
