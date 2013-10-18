@@ -9,6 +9,8 @@ import java.util.concurrent.Future;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 
+import com.google.common.collect.Lists;
+
 import ua.org.afonmad.threads.DownloadPhotoThread;
 import ua.org.afonmad.threads.PhotoEntryCollector;
 import ua.org.afonmad.utils.InformationCounter;
@@ -43,7 +45,7 @@ public class PicasawebDownloader {
 	}
 
 	public void runImport() throws Exception {
-//		List<SimpleAlbumEntry> albums = Lists.newArrayList(configurator.getPicasaProxy().getAlbum("Test Album Name"));
+//		List<SimpleAlbumEntry> albums = Lists.newArrayList(configurator.getPicasaProxy().getAlbum("TestAlbum"));
 		List<SimpleAlbumEntry> albums = configurator.getPicasaProxy().getAlbums();
 		Set<SimplePhotoEntry> parsedEntries = collectEntriesToDownload(albums);
 		downloadEntries(parsedEntries);

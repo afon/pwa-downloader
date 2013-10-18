@@ -102,6 +102,10 @@ public class SimplePhotoEntry {
 		return fileName;
 	}
 	
+	public void setFileName(String newName) {
+		fileName = newName;
+	}
+	
 	private void setFileName(PhotoEntry photo, String mediaType) {
 		String fileBaseName = FilenameUtils.getBaseName(photo.getTitle().getPlainText());
 		String fileExt = TYPE_TO_EXTENSION.get(mediaType);

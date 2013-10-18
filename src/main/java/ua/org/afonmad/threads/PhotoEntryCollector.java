@@ -1,11 +1,14 @@
 package ua.org.afonmad.threads;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 
 import ua.org.afonmad.exchange.PicasaProxy;
@@ -26,6 +29,7 @@ public class PhotoEntryCollector implements Callable<Set<SimplePhotoEntry>> {
     private SimpleAlbumEntry simpleAlbum;
     private PicasaProxy picasa;
     private File outputDirectory;
+    private Map<String, Integer> namesUniquess = new HashMap<String, Integer>();
     
     private Logger logger = Logger.getLogger(this.getClass().getName());
     
@@ -41,17 +45,10 @@ public class PhotoEntryCollector implements Callable<Set<SimplePhotoEntry>> {
 		List<PhotoEntry> photos = picasa.getPhotos(simpleAlbum);
 		Set<SimplePhotoEntry> photoEntries = new HashSet<SimplePhotoEntry>();
 		
-		/* hook for testing repeatable names in same album
-		List<String> photoFileNames = new ArrayList<String>();
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		for (PhotoEntry fE : photos) {
-			
-		}
-		
-		return photoEntries;*/
-		
 		for (int i = 0; i < photos.size(); i++) {
 		    SimplePhotoEntry simplePhotoEntry = new SimplePhotoEntry(photos.get(i), simpleAlbum);
+		    fixPotentialDuplicateNames(simplePhotoEntry);
+		    
 		    if (!isAlreadyDownloaded(simplePhotoEntry)) {
 		    	photoEntries.add(simplePhotoEntry);
 		    	InformationCounter.increaseQueuedPhotos();
@@ -67,6 +64,23 @@ public class PhotoEntryCollector implements Callable<Set<SimplePhotoEntry>> {
 		}
 		return photoEntries;
     }
+
+	private void fixPotentialDuplicateNames(SimplePhotoEntry simplePhotoEntry) {
+		if (!namesUniquess.containsKey(simplePhotoEntry.getFileName())) {
+			namesUniquess.put(simplePhotoEntry.getFileName(), 0);
+			return;
+		}	
+			
+		String oldFileName = simplePhotoEntry.getFileName();
+		int nextNumber = namesUniquess.get(oldFileName) + 1;
+		String baseName = FilenameUtils.getBaseName(oldFileName);
+		String extension = FilenameUtils.getExtension(oldFileName);
+		String newFileName = baseName + "_" + nextNumber + "." + extension;
+		simplePhotoEntry.setFileName(newFileName);
+		namesUniquess.put(oldFileName, nextNumber);
+		
+		logger.debug("Fixed duplicate name " + oldFileName + " to " + newFileName);		
+	}
 
 	private boolean isAlreadyDownloaded(SimplePhotoEntry simplePhotoEntry) {
 		File destFile = new File(outputDirectory.getAbsolutePath() + File.separator + simplePhotoEntry.getAlbumName(), simplePhotoEntry.getFileName());

@@ -8,20 +8,21 @@
 |research paralleling|learning apache threadpool, learning java concurrent package|2013.03.27-29|3|
 |implement parallel downloading|use java ExecutorService|2013.03.30|1|
 |research cli capabilities|learn apache cli|2013.03.30|1|
-|implement parallel album-photo parsing and file checking|-|2013.04.07, 14, 15|2+, 4, 2|
-|implement logging |permanently changed|2013.07.11-25|~12|
-|implement checking of create dir and files|means validate output dir, validate each filename and dirname of albums|2013.05.00 - |FSUtils. ~12|
+|implement parallel album-photo parsing and file checking|-|2013.04.07, 14, 15|9|
+|implement logging |permanently changed|2013.07.11-25|12|
+|implement checking of create dir and files|means validate output dir, validate each filename and dirname of albums (FSUtils. )|2013.05.00|12|
 |move all configuration in external class|-|2013.07.26|2|
 |implement cli to pass login password and threads|-|2013.07.27|3|
-|bug with dots in the end of file/folders name||2013.07.29-30|4|
+|bug with dots in the end of file/folders name|-|2013.07.29-30|4|
 |create maven project|to use private repo for google libs|2013.07.30-31|4|
 |add maven exec jar configuration|in order to run jar with dependencies|2013.07.31|16|
-|add check for photos with same name in one album|-|2013.09.05||
+|create github repository|to share project with documentation|2013.09.25|5|
+|add apache licence file to project resource to pack with jar|-|2013.09.25|0|
+|fix duplicates names of photos per each album|-|2013.10.18|2|
+
 
 TODOs: 
-|
-|create github repository|to share project with documentation|||
-|add apache licence files to project resource to pack with jar||||
+
 |add property file to provide version and build date||||
 |rewrite to restart failed downloads and add check of internet failure (f.e. if quantity of photos still same after several retries)||||
 |||||
