@@ -82,11 +82,9 @@ public class FSUtils {
 		File fixedFile = new File(getSessionTempDirPath() + File.separator + fixedFileName);
 		try {
 			if (!fixedFile.createNewFile()) {
-				InformationCounter.increaseDownloadErrors();
 				throw new IllegalArgumentException("Cant create file [" + fileName + "] even with replaced symbols [" + fixedFileName + "]");
 			}
 		} catch (IOException e) {
-			InformationCounter.increaseDownloadErrors();
 			throw new IllegalArgumentException("Cant create file [" + fileName + "] even with replaced symbols [" + fixedFileName + "]", e);
 		}
 		
@@ -98,12 +96,10 @@ public class FSUtils {
 		File outputDir = new File(dirPath);
 		if (!outputDir.exists()) {
 			if (!outputDir.mkdirs()) {
-				InformationCounter.increaseDownloadErrors();
 				throw new IllegalArgumentException("Can't create output directory [" + dirPath + "]. Check name symbols and write permissions");
 			}
 		}
 		if (!canWrite(outputDir)) {
-			InformationCounter.increaseDownloadErrors();
 			throw new IllegalArgumentException("No write permissions for output directory [" + dirPath + "]");
 		}
 		

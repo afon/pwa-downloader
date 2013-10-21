@@ -75,7 +75,6 @@ public class Configurator {
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.setWidth(120);
 			formatter.printHelp("java -jar pwa-downloader.jar -l <login> -p <password> -d <output dir> [-t <threads count>]", options );
-			InformationCounter.increaseDownloadErrors();
 			throw new ParseException("\n" + e.getMessage());
 		}	
 		
