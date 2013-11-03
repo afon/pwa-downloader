@@ -34,7 +34,7 @@ public class Configurator {
 	private static String ACCOUNT_NAME;
 	private static String ACCOUNT_PASSWORD;
 	private static String OUTPUT_PATH;
-	private static String APP_VERSION = "PicasawebDownloader v0.8, built at July 2013";
+	private static String APP_VERSION = "PicasawebDownloader v0.9, built at October 2013";
 	
 	private static final Logger logger = Logger.getLogger(Configurator.class);
 			
@@ -52,7 +52,7 @@ public class Configurator {
 	private void prepareConsoleLogging() {
 		ConsoleAppender consoleAppender = new ConsoleAppender(new PatternLayout("%-4r [%t] %-5p %C{1} %x - %m%n"));
 		consoleAppender.setName("consoleAppender");
-		consoleAppender.setThreshold(Level.DEBUG);
+		consoleAppender.setThreshold(Level.INFO);
 		Logger.getRootLogger().addAppender(consoleAppender);
 	}
 

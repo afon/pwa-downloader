@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ua.org.afonmad</groupId>
 	<artifactId>pwa-downloader</artifactId>
-	<version>0.8</version>
+	<version>0.9</version>
 	<name>Picasa Web Albums Downloader</name>
 	<description>Makes a consistent backup of Picasa Web Albums. Java console tool. Created mainly for scheduled jobs, but one-time backup is sure also suited</description>
 
