@@ -52,7 +52,9 @@ public class FSUtils {
 	}
 	
 	public static boolean validateFileName(String fileName) {
-		if (fileName.endsWith(".")) {
+		if (fileName.endsWith(".") 
+			|| !fileName.trim().equals(fileName)
+			|| !fileName.replaceAll(ILLEGAL_FILENAME_SYMBOLS_REGEX, "").equals(fileName)) {
 			return false;
 		}
 		

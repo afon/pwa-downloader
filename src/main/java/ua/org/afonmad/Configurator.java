@@ -34,7 +34,7 @@ public class Configurator {
 	private static String ACCOUNT_NAME;
 	private static String ACCOUNT_PASSWORD;
 	private static String OUTPUT_PATH;
-	private static String APP_VERSION = "PicasawebDownloader v0.9, built at October 2013";
+	private static String APP_VERSION = "PicasawebDownloader v0.91, built at December 2013";
 	
 	private static final Logger logger = Logger.getLogger(Configurator.class);
 			
