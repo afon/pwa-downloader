@@ -15,7 +15,7 @@ import com.google.gdata.data.photos.PhotoEntry;
  */
 public class MetadataInfo {
 	
-	private static final Logger logger = Logger.getLogger("ua.org.afonmad.exchange.MetadataInfo"); 
+	private static final Logger logger = Logger.getLogger(MetadataInfo.class.getName()); 
 
     public static void printAlbumInfo(AlbumEntry album) {
     	logger.trace("Title:\t" + album.getTitle().getPlainText());

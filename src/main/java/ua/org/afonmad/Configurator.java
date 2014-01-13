@@ -25,6 +25,8 @@ import ua.org.afonmad.utils.InformationCounter;
 
 public class Configurator {
 	
+	private static Configurator instance;
+	
 	private File outputDirectory;
 	private ExecutorService albumPool;
 	private ExecutorService downloadPool;
@@ -37,6 +39,16 @@ public class Configurator {
 	private static String APP_VERSION = "PicasawebDownloader v0.91, built at December 2013";
 	
 	private static final Logger logger = Logger.getLogger(Configurator.class);
+	
+	private Configurator() {
+	}
+	
+	public static Configurator getInstance() {
+		if (instance == null) {
+			instance = new Configurator();
+		}
+		return instance;
+	}
 			
 	public void prepareSession(String[] args) throws Exception {
 		prepareParameters(args);
@@ -153,6 +165,4 @@ public class Configurator {
 		return picasaProxy;
 	}
 
-	
-	
 }

@@ -26,7 +26,7 @@ import ua.org.afonmad.wrapper.SimplePhotoEntry;
  */
 public class PicasawebDownloader {
 	
-	private Configurator configurator = new Configurator();
+	private Configurator configurator = Configurator.getInstance();
 	static final Logger logger = Logger.getLogger(PicasawebDownloader.class);
 	
 	public static void main(String[] args) throws Exception {
@@ -41,7 +41,6 @@ public class PicasawebDownloader {
 			logger.fatal("PicasawebDownloader stopped with following message:");
 			logger.fatal(e);
 		}
-		imp.configurator.shutdownSession();
 	}
 
 	public void runImport() throws Exception {

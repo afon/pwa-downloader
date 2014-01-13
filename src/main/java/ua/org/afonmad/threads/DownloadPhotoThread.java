@@ -30,6 +30,9 @@ public class DownloadPhotoThread extends Thread {
 	
 	private SimplePhotoEntry photo;
 	private File parentFolder;
+	private int restarts = 0;
+	private DownloadStatus downloadStatus = DownloadStatus.FAIL;
+	private DownloadResultListener downloadResultListener = DownloadResultListener.getInstance();
 
 	public DownloadPhotoThread(SimplePhotoEntry photo, File parentFolder) {
 		this.photo = photo;
@@ -39,6 +42,7 @@ public class DownloadPhotoThread extends Thread {
 
 	@Override
 	public void run() {
+		restarts++;
 		File destinationFile = prepareDestinationFile();
 		try {
 			logger.debug(photo + " download started");
@@ -47,16 +51,31 @@ public class DownloadPhotoThread extends Thread {
 			photo.getAlbum().markPhotoCompleted(photo);
 			InformationCounter.increaseCompletedPhotos();
 			logger.debug(photo + " downloaded successfully");
+			downloadStatus = DownloadStatus.SUCCESS;
 		} catch (Exception e) {
 			logger.warn(photo + " can't be downloaded for reasons below. Partially downloaded file will be deleted", e);
 			destinationFile.delete();
-			InformationCounter.increaseDownloadErrors();			
+			InformationCounter.increaseDownloadErrors();
+			downloadStatus = DownloadStatus.FAIL;
 		}
+		notifyResultListener();
 	}
 
+	public int getRestartCounter() {
+		return restarts;
+	}
+	
+	public DownloadStatus getDownloadStatus() {
+		return downloadStatus;
+	}
+	
 	private File prepareDestinationFile() {
 		File destFile = new File(parentFolder.getAbsolutePath() + File.separator + photo.getAlbumName(), photo.getFileName());
 		return destFile;
+	}
+	
+	private void notifyResultListener() {
+		downloadResultListener.handleDownloadResult(this);
 	}
 
 }
