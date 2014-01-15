@@ -3,6 +3,7 @@ package ua.org.afonmad.utils;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
@@ -15,14 +16,13 @@ import org.apache.commons.io.FileUtils;
 public class FSUtils {
 
 	private static final String ILLEGAL_FILENAME_SYMBOLS_REGEX = "[\\\\/:*?\"<>|]";
-	private static String SESSION_TMP_DIR_PATH;
 
 	public static boolean validateDirName(String dir) {
 		if (dir.endsWith(".")) {
 			return false;
 		}
 		
-		File testDir = new File(getSessionTempDirPath() + File.separator + dir);
+		File testDir = new File(getTempDirPath() + File.separator + dir);
 		if (!testDir.mkdir()) {
 			return false;
 		}
@@ -41,7 +41,7 @@ public class FSUtils {
 		}
 		fixedDirName = fixedDirName.trim();
 		
-		File fixedDir = new File(getSessionTempDirPath() + File.separator + fixedDirName);
+		File fixedDir = new File(getTempDirPath() + File.separator + fixedDirName);
 		if (!fixedDir.mkdir()) {
 			InformationCounter.increaseDownloadErrors();
 			throw new IllegalArgumentException("Cant create dir [" + dirName + "] even with replaced symbols [" + fixedDirName + "]");
@@ -58,7 +58,7 @@ public class FSUtils {
 			return false;
 		}
 		
-		File testFile = new File(getSessionTempDirPath() + File.separator + fileName);
+		File testFile = new File(getTempDirPath() + File.separator + fileName);
 		try {
 			if (!testFile.createNewFile()) {
 				return false;
@@ -81,7 +81,7 @@ public class FSUtils {
 		}
 		fixedFileName = fixedFileName.trim();		
 		
-		File fixedFile = new File(getSessionTempDirPath() + File.separator + fixedFileName);
+		File fixedFile = new File(getTempDirPath() + File.separator + fixedFileName);
 		try {
 			if (!fixedFile.createNewFile()) {
 				throw new IllegalArgumentException("Cant create file [" + fileName + "] even with replaced symbols [" + fixedFileName + "]");
@@ -138,15 +138,12 @@ public class FSUtils {
 		}
 	}
 	
-	public static String getSessionTempDirPath() {
-		if (SESSION_TMP_DIR_PATH == null) {
-			SESSION_TMP_DIR_PATH = FileUtils.getTempDirectoryPath() + "pwad-" + System.currentTimeMillis();
-			File tmpDir = new File(SESSION_TMP_DIR_PATH);
-			tmpDir.mkdirs();
-			tmpDir.deleteOnExit();
-		}
-		
-		return SESSION_TMP_DIR_PATH;
+	public static String getTempDirPath() {
+		String tmpDirPath = FileUtils.getTempDirectoryPath() + "pwad-" + UUID.randomUUID();
+		File tmpDir = new File(tmpDirPath);
+		tmpDir.mkdirs();
+		tmpDir.deleteOnExit();
+		return tmpDirPath;
 	}
 
 }

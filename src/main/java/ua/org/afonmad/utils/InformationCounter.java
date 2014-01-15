@@ -39,6 +39,8 @@ public class InformationCounter {
 	 */
 	private static AtomicInteger downloadErrors = new AtomicInteger(0);	
 	
+	private static AtomicInteger completedThreads = new AtomicInteger(0);
+	
 	public static void increaseQueuedPhotos() {
 		queuedPhotos.incrementAndGet();
 	}
@@ -78,5 +80,14 @@ public class InformationCounter {
 	public static int getDownloadErrors() {
 		return downloadErrors.get();
 	}
+	
+	public static void increaseCompletedThreads() {
+		completedThreads.incrementAndGet();
+	}
+	
+	public static int getCompletedThreads() {
+		return completedThreads.get();
+	}
+	
 	
 }

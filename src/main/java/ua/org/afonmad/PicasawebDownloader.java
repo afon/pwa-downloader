@@ -41,6 +41,7 @@ public class PicasawebDownloader {
 			logger.fatal("PicasawebDownloader stopped with following message:");
 			logger.fatal(e);
 		}
+		imp.configurator.shutdownSession();
 	}
 
 	public void runImport() throws Exception {
@@ -85,6 +86,10 @@ public class PicasawebDownloader {
 			}
 		} else {
 			logger.info("Noting to download now. Probably all photos are already downloaded.");
+		}
+		
+		while (InformationCounter.getCompletedThreads() < InformationCounter.getQueuedPhotos()) {
+			// wait while all threads completed
 		}
 	}
 }
