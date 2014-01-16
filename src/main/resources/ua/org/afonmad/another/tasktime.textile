@@ -19,13 +19,9 @@
 |create github repository|to share project with documentation|2013.09.25|5|
 |add apache licence file to project resource to pack with jar|-|2013.09.25|0|
 |fix duplicates names of photos per each album|-|2013.10.18|2|
+|add download thread restarter in case particular download failed|-|2013.12-2014.01|16|
+|add property file to place there version, app name and build date| Main purpose is to specify app version only in pom file|2014.01.15, 16|5|
 
 
 TODOs: 
-
-|add property file to provide version and build date||||
-|rewrite to restart failed downloads and add check of internet failure (f.e. if quantity of photos still same after several retries)||||
-|||||
-|||||
-|||||
-|||||
+See "issues at github":http://github.com/afon/pwa-downloader/issues

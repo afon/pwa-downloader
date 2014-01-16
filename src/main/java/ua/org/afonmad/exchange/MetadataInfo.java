@@ -19,16 +19,16 @@ public class MetadataInfo {
 
     public static void printAlbumInfo(AlbumEntry album) {
     	logger.trace("Title:\t" + album.getTitle().getPlainText());
-        logger.trace("Местоположение:\t" + album.getLocation());
-        logger.trace("Короткое Имя:\t" + album.getName());  
-        logger.trace("Ссылка Id\t" + album.getUsername());
-        logger.trace("Автор Альбома:\t" + album.getNickname());                  		
-        logger.trace("Размер альбома:\t" + album.getBytesUsed());                 		
-        logger.trace("Дата создания:\t" + album.getDate());		          		
-        logger.trace("Описание:\t" + album.getDescription().getPlainText());
+        logger.trace("Location:\t" + album.getLocation());
+        logger.trace("Short Name:\t" + album.getName());  
+        logger.trace("Username Id\t" + album.getUsername());
+        logger.trace("Author Name:\t" + album.getNickname());                  		
+        logger.trace("Album Size in bytes:\t" + album.getBytesUsed());                 		
+        logger.trace("Creation Date:\t" + album.getDate());		          		
+        logger.trace("Description:\t" + album.getDescription().getPlainText());
         if (album.getGeoLocation() != null) {
-            logger.trace("Широта:\t" + album.getGeoLocation().getLatitude());
-            logger.trace("Долгота\t" + album.getGeoLocation().getLongitude());
+            logger.trace("Latitude:\t" + album.getGeoLocation().getLatitude());
+            logger.trace("Longitude\t" + album.getGeoLocation().getLongitude());
         }
     }
 

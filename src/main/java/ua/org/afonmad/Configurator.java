@@ -2,8 +2,10 @@ package ua.org.afonmad;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -36,7 +38,7 @@ public class Configurator {
 	private static String ACCOUNT_NAME;
 	private static String ACCOUNT_PASSWORD;
 	private static String OUTPUT_PATH;
-	private static String APP_VERSION = "PicasawebDownloader v0.92, built at January 2014";
+	private static String APP_VERSION;
 	
 	private static final Logger logger = Logger.getLogger(Configurator.class);
 	
@@ -51,14 +53,26 @@ public class Configurator {
 	}
 			
 	public void prepareSession(String[] args) throws Exception {
+		prepareProperties();
 		prepareParameters(args);
 		prepareConsoleLogging();
-		logger.info(APP_VERSION + ". Session started");
-		
 		prepareOutputDirectory();
 		prepareFileLogging();
+		
+		logger.info(APP_VERSION + ". Session started");
+		
 		preparePicasaProxy();
 		prepareThreadPools();
+	}
+	
+	private void prepareProperties() throws IOException {
+		Properties p = new Properties();
+		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("ua/org/afonmad/version.properties");
+		if (inputStream == null) {
+			throw new RuntimeException("property file version.properties not found in the classpath");
+		}
+		p.load(inputStream);
+		APP_VERSION = p.getProperty("app.name") + " " + p.getProperty("app.version") + ", built at " + p.getProperty("app.date");		
 	}
 	
 	private void prepareConsoleLogging() {
@@ -107,7 +121,7 @@ public class Configurator {
 		logger.debug("Validating output directory ...");
 		outputDirectory = FSUtils.createValidatedOutputDirectory(OUTPUT_PATH);
 		FSUtils.cleanOutputDirectory(outputDirectory);
-		logger.info("Output directory pointed to [" + outputDirectory.getAbsolutePath() + "]");
+//		logger.info("Output directory pointed to [" + outputDirectory.getAbsolutePath() + "]");
 		return outputDirectory;
 	}
 	
