@@ -9,7 +9,8 @@
 
 	<properties>
 	   <timestamp>${maven.build.timestamp}</timestamp>
-	   <maven.build.timestamp.format>MMMM yyyy</maven.build.timestamp.format>
+	   <maven.build.timestamp.format>yyyy.MM.dd</maven.build.timestamp.format>
+	   <maven.build.timestamp.locale>en_US</maven.build.timestamp.locale>
 	</properties>
 
 	<build>

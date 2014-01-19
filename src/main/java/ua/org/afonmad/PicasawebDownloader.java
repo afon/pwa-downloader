@@ -45,8 +45,8 @@ public class PicasawebDownloader {
 	}
 
 	public void runImport() throws Exception {
-		List<SimpleAlbumEntry> albums = Lists.newArrayList(configurator.getPicasaProxy().getAlbum("Сентябрь 2013"));
-//		List<SimpleAlbumEntry> albums = configurator.getPicasaProxy().getAlbums();
+//		List<SimpleAlbumEntry> albums = Lists.newArrayList(configurator.getPicasaProxy().getAlbum("Сентябрь 2013"));
+		List<SimpleAlbumEntry> albums = configurator.getPicasaProxy().getAlbums();
 		Set<SimplePhotoEntry> parsedEntries = collectEntriesToDownload(albums);
 		downloadEntries(parsedEntries);
 	}
