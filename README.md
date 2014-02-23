@@ -5,6 +5,8 @@ pwa-downloader
 
 In order to use binary distribution of this tool you shoud install latest version of JRE (http://www.java.com/en/download/index.jsp) and configure JAVA_HOME environment variable.
 
+**Get latest binary** release here: [v0.93](https://github.com/afon/pwa-downloader/releases/tag/v0.93)
+
 **Syntax:** 
 ```
 java -jar pwa-downloader-vN.jar -l <login> -p <password> -d <output dir> [-t <threads count>]
