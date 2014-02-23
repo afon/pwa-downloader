@@ -1,3 +1,18 @@
+/*
+ *	Copyright 2013-2014, Andrew Afanasenko, Kiev, Ukraine.
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 package ua.org.afonmad.wrapper;
 
 import java.io.File;
@@ -15,8 +30,6 @@ import com.google.gdata.data.photos.AlbumEntry;
 
 /**
  * Wrapper on Picasa's Album class that use only valuable for downloading information about album.
- *
- * @author Andrew Afanasenko, 2013, Kiev, Ukraine
  */
 public class SimpleAlbumEntry {
 
@@ -57,6 +70,7 @@ public class SimpleAlbumEntry {
 		if (!FSUtils.validateDirName(result)) {
 			try {
 				result = FSUtils.fixDirName(result);
+				logger.trace("Passed directory for album [" + result + "]");
 			} catch (Exception e) {
 				logger.warn("Can't create directory for album [" + result + "]. Using albumId [" + album.getGphotoId() + "]");
 				logger.warn("Cause: " + e.getMessage());

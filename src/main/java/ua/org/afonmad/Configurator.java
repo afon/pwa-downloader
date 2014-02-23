@@ -1,3 +1,18 @@
+/*
+ *	Copyright 2013-2014, Andrew Afanasenko, Kiev, Ukraine.
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 package ua.org.afonmad;
 
 import java.io.File;
@@ -25,10 +40,15 @@ import ua.org.afonmad.exchange.PicasaProxy;
 import ua.org.afonmad.utils.FSUtils;
 import ua.org.afonmad.utils.InformationCounter;
 
+/**
+ * Configure all program parameters before beginning main job.<br/>
+ * Parses cli arguments, prepare logging, threadpools and output directory.<br/>
+ * Also it call logging in method  to Google Pacasa.<br/>
+ * See {@link #prepareSession(String[])} method that is an entry point of this class.
+ */
 public class Configurator {
-	
 	private static Configurator instance;
-	
+
 	private File outputDirectory;
 	private ExecutorService albumPool;
 	private ExecutorService downloadPool;
@@ -39,42 +59,44 @@ public class Configurator {
 	private static String ACCOUNT_PASSWORD;
 	private static String OUTPUT_PATH;
 	private static String APP_VERSION;
-	
+
 	private static final Logger logger = Logger.getLogger(Configurator.class);
-	
+
 	private Configurator() {
 	}
-	
+
 	public static Configurator getInstance() {
 		if (instance == null) {
 			instance = new Configurator();
 		}
 		return instance;
 	}
-			
+
 	public void prepareSession(String[] args) throws Exception {
 		prepareProperties();
 		prepareParameters(args);
 		prepareConsoleLogging();
 		prepareOutputDirectory();
 		prepareFileLogging();
-		
+
 		logger.info(APP_VERSION + ". Session started");
-		
+
 		preparePicasaProxy();
 		prepareThreadPools();
 	}
-	
+
 	private void prepareProperties() throws IOException {
 		Properties p = new Properties();
-		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("ua/org/afonmad/version.properties");
+		InputStream inputStream = this.getClass().getClassLoader()
+				.getResourceAsStream("ua/org/afonmad/version.properties");
 		if (inputStream == null) {
 			throw new RuntimeException("property file version.properties not found in the classpath");
 		}
 		p.load(inputStream);
-		APP_VERSION = p.getProperty("app.name") + " " + p.getProperty("app.version") + ", built at " + p.getProperty("app.date");		
+		APP_VERSION = p.getProperty("app.name") + " " + p.getProperty("app.version") + ", built at "
+				+ p.getProperty("app.date");
 	}
-	
+
 	private void prepareConsoleLogging() {
 		ConsoleAppender consoleAppender = new ConsoleAppender(new PatternLayout("%-4r [%t] %-5p %C{1} %x - %m%n"));
 		consoleAppender.setName("consoleAppender");
@@ -88,7 +110,7 @@ public class Configurator {
 		options.addOption("l", true, "Required. Login used to log in into Picasa");
 		options.addOption("p", true, "Required. Password used to log in into Picasa");
 		options.addOption("d", true, "Required. Local path to directory where to download albums");
-		
+
 		CommandLineParser parser = new BasicParser();
 		CommandLine cli = null;
 		try {
@@ -100,10 +122,12 @@ public class Configurator {
 			System.out.println(APP_VERSION);
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.setWidth(120);
-			formatter.printHelp("java -jar pwa-downloader.jar -l <login> -p <password> -d <output dir> [-t <threads count>]", options );
+			formatter.printHelp(
+					"java -jar pwa-downloader.jar -l <login> -p <password> -d <output dir> [-t <threads count>]",
+					options);
 			throw new ParseException("\n" + e.getMessage());
-		}	
-		
+		}
+
 		if (cli.hasOption("t")) {
 			try {
 				N_THREADS = new Integer(cli.getOptionValue("t"));
@@ -111,27 +135,26 @@ public class Configurator {
 				// live N_TREADS as 20 by default
 			}
 		}
-		
+
 		ACCOUNT_NAME = cli.getOptionValue("l");
 		ACCOUNT_PASSWORD = cli.getOptionValue("p");
 		OUTPUT_PATH = cli.getOptionValue("d");
 	}
-	
+
 	private File prepareOutputDirectory() throws Exception {
 		logger.debug("Validating output directory ...");
 		outputDirectory = FSUtils.createValidatedOutputDirectory(OUTPUT_PATH);
 		FSUtils.cleanOutputDirectory(outputDirectory);
-//		logger.info("Output directory pointed to [" + outputDirectory.getAbsolutePath() + "]");
 		return outputDirectory;
 	}
-	
+
 	private void prepareFileLogging() throws IOException {
 		String logFileName = new SimpleDateFormat("yyyy-MM-dd.HH-mm-ss").format(new Date()) + ".log";
-		FileAppender fileAppender = new FileAppender(new PatternLayout("%d [%t] %-5p %C{1} - %m%n"), outputDirectory.getAbsolutePath() + File.separator + logFileName);
+		FileAppender fileAppender = new FileAppender(new PatternLayout("%d [%t] %-5p %C{1} - %m%n"),
+				outputDirectory.getAbsolutePath() + File.separator + logFileName);
 		fileAppender.setName("fileAppender");
-		fileAppender.setThreshold(Level.DEBUG);
-		Logger.getLogger("fileAppender").setLevel(Level.DEBUG);
 		Logger.getRootLogger().addAppender(fileAppender);
+		Logger.getRootLogger().setLevel(Level.DEBUG);
 	}
 
 	private void preparePicasaProxy() throws Exception {
@@ -140,29 +163,30 @@ public class Configurator {
 		picasaProxy.login(ACCOUNT_NAME, ACCOUNT_PASSWORD);
 		logger.debug("PicasawebService accessed successfully");
 	}
-	
+
 	private void prepareThreadPools() {
-		albumPool = Executors.newFixedThreadPool(N_THREADS); 
+		albumPool = Executors.newFixedThreadPool(N_THREADS);
 		downloadPool = Executors.newFixedThreadPool(N_THREADS);
 		logger.debug("Prepared " + N_THREADS + " threads for photo downloading");
 	}
 
 	public void shutdownSession() {
 		logger.debug("Shutting down " + N_THREADS + " threads..");
-		if (albumPool != null) albumPool.shutdown();
-		if (downloadPool != null) downloadPool.shutdown();
-		
+		if (albumPool != null)
+			albumPool.shutdown();
+		if (downloadPool != null)
+			downloadPool.shutdown();
+
 		while (downloadPool != null && !downloadPool.isTerminated()) {
-			//just waiting wile pool will complete all download work
+			// just waiting wile pool will complete all download work
 		}
 		logger.info("Session completed.");
-		logger.info("Status: \n" 
-				+ "\t" + InformationCounter.getQueuedPhotos() + " photos queued to download, \n" 
-				+ "\t" + InformationCounter.getCompletedPhotos() + " photos downloaded successfully, \n"
-				+ "\t" + InformationCounter.getAlreadyDownloadedPhotos() + " photos skipped because downloaded earlier \n"
+		logger.info("Status: \n" + "\t" + InformationCounter.getQueuedPhotos() + " photos queued to download, \n"
+				+ "\t" + InformationCounter.getCompletedPhotos() + " photos downloaded successfully, \n" + "\t"
+				+ InformationCounter.getAlreadyDownloadedPhotos() + " photos skipped because downloaded earlier \n"
 				+ "\tand " + InformationCounter.getDownloadErrors() + " errors registered during download.");
 	}
-	
+
 	public File getOutputDirectory() {
 		return outputDirectory;
 	}

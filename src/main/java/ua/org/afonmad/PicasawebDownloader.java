@@ -1,3 +1,18 @@
+/*
+*	Copyright 2013-2014, Andrew Afanasenko, Kiev, Ukraine.
+*
+*   Licensed under the Apache License, Version 2.0 (the "License");
+*   you may not use this file except in compliance with the License.
+*   You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+*   Unless required by applicable law or agreed to in writing, software
+*   distributed under the License is distributed on an "AS IS" BASIS,
+*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*   See the License for the specific language governing permissions and
+*   limitations under the License.
+*/
 package ua.org.afonmad;
 
 import java.util.HashSet;
@@ -21,8 +36,6 @@ import ua.org.afonmad.wrapper.SimplePhotoEntry;
  * The main worker. Prepare and shutdown multiple threads for analyzing albums, collecting photos and running download itself.
  * Also it prepare logging and read command line parameters. 
  * By default thread pools uses 20 threads, you can change it by -t parameter.
- * 
- * @author Andrew Afanasenko, 2013, Kiev, Ukraine
  */
 public class PicasawebDownloader {
 	
@@ -45,7 +58,7 @@ public class PicasawebDownloader {
 	}
 
 	public void runImport() throws Exception {
-//		List<SimpleAlbumEntry> albums = Lists.newArrayList(configurator.getPicasaProxy().getAlbum("Сентябрь 2013"));
+//		List<SimpleAlbumEntry> albums = Lists.newArrayList(configurator.getPicasaProxy().getAlbum("Юльчик, видео"));
 		List<SimpleAlbumEntry> albums = configurator.getPicasaProxy().getAlbums();
 		Set<SimplePhotoEntry> parsedEntries = collectEntriesToDownload(albums);
 		downloadEntries(parsedEntries);
